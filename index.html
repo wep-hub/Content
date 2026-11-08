@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffee Content AI - เครื่องมือคิดคอนเทนต์ร้านกาแฟ</title>
+  <style>
+    :root {
+      --bg-color: #fcf9f2;
+      --card-bg: #ffffff;
+      --primary: #4a2c2a;
+      --primary-hover: #361f1d;
+      --accent: #c88a4b;
+      --accent-light: #f5e9d9;
+      --text: #2c2523;
+      --text-muted: #756a63;
+      --border: #e6ded4;
+      --shadow: 0 10px 30px rgba(74, 44, 42, 0.08);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .app-layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #fff;
+    }
+
+    select:focus, input[type="text"]:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill-btn {
+      padding: 8px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      background: #fff;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .pill-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .btn-main {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-main:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      padding: 10px 18px;
+      background: var(--accent-light);
+      color: var(--primary);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .history-list {
+      margin-top: 10px;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      background: var(--bg-color);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+    }
+
+    .remove-history {
+      color: #d9534f;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Output Section */
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--bg-color);
+    }
+
+    .hook-card {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 12px;
+    }
+
+    .storyboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    .storyboard-table th, .storyboard-table td {
+      padding: 10px;
+      border: 1px solid var(--border);
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .storyboard-table th {
+      background: var(--bg-color);
+      color: var(--primary);
+    }
+
+    .caption-box {
+      background: #fdfdfd;
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .placeholder-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>☕ Coffee Content AI</h1>
+      <p>เครื่องมือช่วยคิดไอเดีย สคริปต์คลิป สตอรี่บอร์ด และแคปชั่นสำหรับร้านกาแฟ</p>
+    </header>
+
+    <div class="app-layout">
+      <!-- Input Panel -->
+      <div class="panel">
+        <div class="form-group">
+          <label>1. เลือกหมวดหมู่คอนเทนต์</label>
+          <select id="categorySelect">
+            <option value="ตามเทศกาล">เทศกาล / วันสำคัญ</option>
+            <option value="เมนูแนะนำ">เมนูแนะนำ (Signature)</option>
+            <option value="เบเกอร์รี่">เบเกอรี่ / ขนมหวาน</option>
+            <option value="ความรู้เรื่องกาแฟ">ความรู้เรื่องกาแฟ (Coffee Knowledge)</option>
+            <option value="เมนูเครื่องดื่ม">เมนูเครื่องดื่ม (Drink Menu)</option>
+            <option value="เบื้องหลังร้าน">เบื้องหลังร้าน (Behind The Scenes)</option>
+            <option value="เกี่ยวกับพนักงาน">เกี่ยวกับพนักงาน / Barista</option>
+            <option value="โปรโมชั่น">โปรโมชั่น / กิจกรรมร้าน</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>2. ความยาวคลิป</label>
+          <div class="pill-group" id="lengthGroup">
+            <button class="pill-btn active" data-value="30วิ">30 วินาที</button>
+            <button class="pill-btn" data-value="45วิ">45 วินาที</button>
+            <button class="pill-btn" data-value="1นาที">1 นาที</button>
+            <button class="pill-btn" data-value="2นาที">2 นาที</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>3. Mood & Tone คลิป</label>
+          <select id="toneSelect">
+            <option value="อบอุ่น เป็นกันเอง">อบอุ่น เป็นกันเอง (Warm & Cozy)</option>
+            <option value="สนุกสนาน ตลกตามกระแส">สนุกสนาน ตลกตามกระแส (Fun & Trendy)</option>
+            <option value="มืออาชีพ สไตล์ Expert">มืออาชีพ ให้ความรู้ (Expert & Professional)</option>
+            <option value="Minimal Slow-life">มินิมอล สโลว์ไลฟ์ (Minimal & Cinematic)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>4. ชื่อเมนู / คีย์เวิร์ดเฉพาะ (ถ้ามี)</label>
+          <input type="text" id="keywordInput" placeholder="เช่น Dirty Coffee, ชาไทย, เค้กส้ม">
+        </div>
+
+        <button class="btn-main" id="generateBtn">🚀 สร้างไอเดียคอนเทนต์</button>
+
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border);">
+
+        <div class="form-group">
+          <label>🚫 คอนเทนต์ที่เคยทำแล้ว (AI จะเลี่ยง)</label>
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="historyInput" placeholder="เพิ่มหัวข้อที่ทำแล้ว...">
+            <button class="btn-secondary" id="addHistoryBtn" style="white-space: nowrap;">เพิ่ม</button>
+          </div>
+          <div class="history-list" id="historyList"></div>
+        </div>
+      </div>
+
+      <!-- Result Panel -->
+      <div class="panel" id="resultPanel">
+        <div class="placeholder-state" id="placeholder">
+          <h3>👈 เลือกตัวเลือกด้านซ้ายแล้วกด "สร้างไอเดียคอนเทนต์"</h3>
+          <p>ระบบจะสร้างฮุค 3 วินาทีแรก สตอรี่บอร์ดตามเวลา และแคปชั่นให้อัตโนมัติ</p>
+        </div>
+
+        <div id="resultContent" style="display: none;">
+          <div class="output-header">
+            <div>
+              <h2 id="outTitle" style="color: var(--primary);">หัวข้อคอนเทนต์</h2>
+              <span id="outBadge" style="background: var(--accent-light); color: var(--accent); font-size: 0.8rem; font-weight: bold; padding: 4px 8px; border-radius: 6px;">หมวดหมู่</span>
+            </div>
+            <button class="btn-secondary" id="rerollBtn">🔄 สุ่มไอเดียใหม่</button>
+          </div>
+
+          <h3 style="margin-bottom: 10px; color: var(--primary);">🎯 ฮุค 3 วินาทีแรก (เลือกใช้ 1 แบบ)</h3>
+          <div class="hook-card"><b>แบบที่ 1 (ถามตรงจุด):</b> <span id="hook1"></span></div>
+          <div class="hook-card"><b>แบบที่ 2 (สร้างความสงสัย):</b> <span id="hook2"></span></div>
+          <div class="hook-card"><b>แบบที่ 3 (หยุดสายตา/ภาพ):</b> <span id="hook3"></span></div>
+
+          <h3 style="margin: 20px 0 10px 0; color: var(--primary);">🎬 สคริปต์ & สตอรี่บอร์ด</h3>
+          <table class="storyboard-table">
+            <thead>
+              <tr>
+                <th style="width: 15%;">เวลา</th>
+                <th style="width: 40%;">ภาพ (Visual / Angle)</th>
+                <th style="width: 45%;">เสียงพากย์ / ซาวด์ (Audio & SFX)</th>
+              </tr>
+            </thead>
+            <tbody id="storyboardBody"></tbody>
+          </table>
+
+          <h3 style="margin: 20px 0 10px 0; color: var(--primary);">📝 แคปชั่นสำหรับโพสต์</h3>
+          <div class="caption-box">
+            <button class="copy-btn" id="copyBtn">คัดลอก</button>
+            <div id="captionText"></div>
+          </div>
+
+          <button class="btn-secondary" id="markDoneBtn" style="margin-top: 15px; width: 100%;">📌 บันทึกว่าทำคอนเทนต์นี้แล้ว (ย้ายเข้าตัวกรอง)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State Application
+    let selectedLength = '30วิ';
+    let historyData = ['แนะนำร้านวันแรก', 'รีวิวอเมริกาโน่เย็น'];
+
+    // Database Mock Engine (คลังไอเดียสำหรับสุ่ม)
+    const database = {
+      'ตามเทศกาล': [
+        {
+          title: "แจกพิกัดเมนูต้อนรับเทศกาลลับๆ ที่ร้านกาแฟ",
+          hook1: "รู้ยัง? เทศกาลนี้ร้านเรามีเมนูพิเศษที่ไม่มีในเมนูหลัก!",
+          hook2: "อย่าเพิ่งฉลองเทศกาลนี้ ถ้ายังไม่ได้ลองแก้วนี้...",
+          hook3: "ภาพเทไซรัปสีสวยต้อนรับเทศกาลแบบ Slow motion",
+          storyboard: {
+            '30วิ': [
+              { time: "0-3s", visual: "ซูมใกล้แก้วเครื่องดื่มเทศกาลที่มีการตกแต่งพิเศษ", audio: "รู้ยัง? เทศกาลนี้ร้านเรามีเมนูพิเศษสุดคิวท์!" },
+              { time: "4-15s", visual: "ตัดสลับขั้นตอนการชง ตั้งแต่บดเมล็ดกาแฟ เทนม เทไซรัป", audio: "เรานำเอาฟีลลิ่งของเทศกาลมารวมไว้ในแก้วนี้" },
+              { time: "16-25s", visual: "ภาพบาริสต้ายื่นแก้วให้ลูกค้า พร้อมรอยยิ้ม", audio: "รสชาตินุ่มละมุน ลิมิเต็ดเฉพาะช่วงนี้เท่านั้นนะ" },
+              { time: "26-30s", visual: "ขึ้นข้อความชื่อร้านและพิกัดบนหน้าจอ", audio: "แวะมาเช็คอินกันได้ที่ร้านเลยครับ!" }
+            ]
+          },
+          caption: "✨ เทศกาลนี้มีแก้วโปรดหรือยัง? แวะมาลองเมนูใหม่พิเศษต้อนรับเทศกาลกันได้ที่ร้านเรานะ! ☕️❤️\n\n📍 พิกัดร้านเปิดบริการทุกวัน 08.00 - 17.00 น.\n#ร้านกาแฟ #เมนูเทศกาล #CafeVlog"
+        }
+      ],
+      'ความรู้เรื่องกาแฟ': [
+        {
+          title: "ทำไมดื่มกาแฟแล้วยังง่วง? แก้ด้วยวิธีนี้!",
+          hook1: "เคยไหม? ดื่มกาแฟหมดแก้วแต่ยังง่วงเหมือนเดิม!",
+          hook2: "หยุดกินกาแฟแบบนี้ ถ้าไม่อยากง่วงกว่าเดิม...",
+          hook3: "ภาพคนฟุบหลับคาโต๊ะทั้งที่มีแก้วกาแฟวางอยู่",
+          storyboard: {
+            '30วิ': [
+              { time: "0-3s", visual: "ภาพคนฟุบหลับคู่กับแก้วกาแฟ", audio: "เคยมั้ยครับ ดื่มกาแฟหมดแก้วแต่ก็ยังง่วง?" },
+              { time: "4-15s", visual: "กราฟิกง่ายๆ อธิบายเรื่องโมเลกุลคาเฟอีนและการดื่มน้ำ", audio: "เพราะคาเฟอีนต้องการน้ำในการดูดซึม ถ้าเปิดด้วยน้ำเปล่าก่อนจะสดชื่นขึ้น" },
+              { time: "16-25s", visual: "บาริสโต้ชูแก้วน้ำเปล่าคู่กับเอสเพรสโซ่ช็อต", audio: "ลองจิบน้ำเปล่าตาม 1 แก้ว รับรองตื่นยาวทั้งวัน!" },
+              { time: "26-30s", visual: "โลโก้ร้านและบาริสต้ายิ้มกวักมือเรียก", audio: "ความรู้กาแฟดีๆ มีเสิร์ฟที่ร้านเราทุกวันครับ" }
+            ]
+          },
+          caption: "☕️ ดื่มกาแฟยังไงให้ตื่นจริง? วันนี้บาริสต้ามีเทคนิคง่ายๆ มาฝากครับ! 💡\n\n#ความรู้กาแฟ #สาระกาแฟ #ร้านกาแฟ #BaristaTips"
+        }
+      ],
+      ' default': [
+        {
+          title: "เมนูขายดีประจำร้าน ที่มาแล้วต้องสั่ง!",
+          hook1: "ถ้ามาร้านเราแล้วไม่สั่งเมนูนี้ ถือว่ามาไม่ถึง!",
+          hook2: "เบื้องหลังเมนูที่ขายดีที่สุด วันละ 100 แก้ว!",
+          hook3: "ภาพราดซ็อตกาแฟลงบนนมสดละมุนๆ ตกแต่งสวยงาม",
+          storyboard: {
+            '30วิ': [
+              { time: "0-3s", visual: "ราดช็อตกาแฟสกัดสดๆ ลงบนนมสดแทรกลายสวยงาม", audio: "ถ้ามาร้านเราแล้วไม่สั่งเมนูนี้ ถือว่าพลาดมาก!" },
+              { time: "4-15s", visual: "ภาพซูมขั้นตอนการเตรียมวัตถุดิบอย่างประณีต", audio: "เมนู Signature ที่เราใช้วัตถุดิบพรีเมียมทั้งหมด" },
+              { time: "16-25s", visual: "บรรยากาศลูกค้าจิบกาแฟในร้านอย่างมีความสุข", audio: "รสชาติเข้มข้น นุ่มละมุนเข้ากันสุดๆ" },
+              { time: "26-30s", visual: "ขึ้นรูปแก้วและปักโลเคชั่นร้าน", audio: "ตามมาลองกันได้เลยวันนี้ที่ร้านครับ!" }
+            ]
+          },
+          caption: "☕️ เมนูฮิตตลอดกาลที่ใครมาก็ต้องสั่ง! ละมุน กลมกล่อม เข้มข้นลงตัวสุดๆ ✨\n\nแวะมารับความสดชื่นกันได้ตั้งแต่นมเช้าเลยครับ 🌿\n\n#ร้านกาแฟ #เมนูแนะนำ #CafeThailand"
+        }
+      ]
+    };
+
+    // UI Logic Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHistory();
+
+      // Pills Event Listener
+      document.querySelectorAll('#lengthGroup .pill-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('#lengthGroup .pill-btn').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          selectedLength = e.target.getAttribute('data-value');
+        });
+      });
+
+      // Add History
+      document.getElementById('addHistoryBtn').addEventListener('click', () => {
+        const val = document.getElementById('historyInput').value.trim();
+        if (val) {
+          historyData.push(val);
+          document.getElementById('historyInput').value = '';
+          renderHistory();
+        }
+      });
+
+      // Generate Button
+      document.getElementById('generateBtn').addEventListener('click', generateContent);
+      document.getElementById('rerollBtn').addEventListener('click', generateContent);
+
+      // Copy Caption
+      document.getElementById('copyBtn').addEventListener('click', () => {
+        const text = document.getElementById('captionText').innerText;
+        navigator.clipboard.writeText(text);
+        alert('คัดลอกแคปชั่นเรียบร้อยแล้ว!');
+      });
+
+      // Mark Done
+      document.getElementById('markDoneBtn').addEventListener('click', () => {
+        const title = document.getElementById('outTitle').innerText;
+        if (title && !historyData.includes(title)) {
+          historyData.push(title);
+          renderHistory();
+          alert('บันทึกเข้าประวัติคอนเทนต์ที่ทำแล้วเรียบร้อย!');
+        }
+      });
+    });
+
+    function renderHistory() {
+      const listEl = document.getElementById('historyList');
+      listEl.innerHTML = '';
+      historyData.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerHTML = `<span>• ${item}</span> <span class="remove-history" onclick="removeHistory(${index})">✕</span>`;
+        listEl.appendChild(div);
+      });
+    }
+
+    function removeHistory(index) {
+      historyData.splice(index, 1);
+      renderHistory();
+    }
+
+    function generateContent() {
+      const category = document.getElementById('categorySelect').value;
+      const keyword = document.getElementById('keywordInput').value.trim();
+
+      // เลือกข้อมูลจาก DB หรือ Fallback
+      const categoryList = database[category] || database[' default'];
+      
+      // กรองไอเดียที่ไม่ซ้ำกับ History
+      const available = categoryList.filter(item => !historyData.includes(item.title));
+      const item = available.length > 0 
+        ? available[Math.floor(Math.random() * available.length)] 
+        : categoryList[0];
+
+      // Custom Keyword replacement
+      let title = item.title;
+      let caption = item.caption;
+      if (keyword) {
+        title += ` (${keyword})`;
+        caption = `✨ สำหรับเมนู ${keyword} สุดพิเศษ!\n` + caption;
+      }
+
+      // Display Results
+      document.getElementById('placeholder').style.display = 'none';
+      document.getElementById('resultContent').style.display = 'block';
+
+      document.getElementById('outTitle').innerText = title;
+      document.getElementById('outBadge').innerText = category + " • " + selectedLength;
+
+      document.getElementById('hook1').innerText = item.hook1;
+      document.getElementById('hook2').innerText = item.hook2;
+      document.getElementById('hook3').innerText = item.hook3;
+
+      // Storyboard Table
+      const tbody = document.getElementById('storyboardBody');
+      tbody.innerHTML = '';
+      const sbData = item.storyboard['30วิ']; // Default View Timeline
+      sbData.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><b>${row.time}</b></td>
+          <td>${row.visual}</td>
+          <td>${row.audio}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('captionText').innerText = caption;
+    }
+  </script>
+</body>
+</html>
