@@ -62,9 +62,7 @@
     }
 
     @media (max-width: 900px) {
-      .app-layout {
-        grid-template-columns: 1fr;
-      }
+      .app-layout { grid-template-columns: 1fr; }
     }
 
     .panel {
@@ -75,9 +73,7 @@
       box-shadow: var(--shadow);
     }
 
-    .form-group {
-      margin-bottom: 18px;
-    }
+    .form-group { margin-bottom: 18px; }
 
     label {
       display: block;
@@ -87,7 +83,7 @@
       font-size: 0.95rem;
     }
 
-    select, input[type="text"], textarea {
+    select, input[type="text"] {
       width: 100%;
       padding: 12px;
       border: 1.5px solid var(--border);
@@ -98,9 +94,7 @@
       background: #fff;
     }
 
-    select:focus, input[type="text"]:focus, textarea:focus {
-      border-color: var(--accent);
-    }
+    select:focus, input[type="text"]:focus { border-color: var(--accent); }
 
     .pill-group {
       display: flex;
@@ -139,9 +133,7 @@
       transition: background 0.2s;
     }
 
-    .btn-main:hover {
-      background: var(--primary-hover);
-    }
+    .btn-main:hover { background: var(--primary-hover); }
 
     .btn-secondary {
       padding: 10px 18px;
@@ -151,6 +143,7 @@
       border-radius: 10px;
       font-weight: 700;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
     .btn-secondary:hover {
@@ -160,7 +153,7 @@
 
     .history-list {
       margin-top: 10px;
-      max-height: 120px;
+      max-height: 140px;
       overflow-y: auto;
     }
 
@@ -168,7 +161,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 10px;
+      padding: 8px 10px;
       background: var(--bg-color);
       border-radius: 6px;
       font-size: 0.85rem;
@@ -179,16 +172,17 @@
       color: #d9534f;
       cursor: pointer;
       font-weight: bold;
+      padding: 0 4px;
     }
 
-    /* Output Section */
     .output-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       margin-bottom: 20px;
       padding-bottom: 12px;
       border-bottom: 2px solid var(--bg-color);
+      gap: 12px;
     }
 
     .hook-card {
@@ -220,7 +214,7 @@
     .caption-box {
       background: #fdfdfd;
       border: 1px solid var(--border);
-      padding: 14px;
+      padding: 16px;
       border-radius: 10px;
       font-size: 0.95rem;
       white-space: pre-wrap;
@@ -229,10 +223,10 @@
 
     .copy-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: 4px 10px;
-      font-size: 0.75rem;
+      top: 12px;
+      right: 12px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
       background: var(--primary);
       color: #fff;
       border: none;
@@ -245,6 +239,17 @@
       padding: 60px 20px;
       color: var(--text-muted);
     }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: bold;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-top: 6px;
+    }
   </style>
 </head>
 <body>
@@ -252,7 +257,7 @@
   <div class="container">
     <header>
       <h1>☕ Coffee Content AI</h1>
-      <p>เครื่องมือช่วยคิดไอเดีย สคริปต์คลิป สตอรี่บอร์ด และแคปชั่นสำหรับร้านกาแฟ</p>
+      <p>เครื่องมือสร้างไอเดีย สคริปต์คลิป สตอรี่บอร์ด และแคปชั่นสำหรับร้านกาแฟ</p>
     </header>
 
     <div class="app-layout">
@@ -294,7 +299,7 @@
 
         <div class="form-group">
           <label>4. ชื่อเมนู / คีย์เวิร์ดเฉพาะ (ถ้ามี)</label>
-          <input type="text" id="keywordInput" placeholder="เช่น Dirty Coffee, ชาไทย, เค้กส้ม">
+          <input type="text" id="keywordInput" placeholder="เช่น Dirty Coffee, ครัวซองต์, ชาไทย">
         </div>
 
         <button class="btn-main" id="generateBtn">🚀 สร้างไอเดียคอนเทนต์</button>
@@ -312,7 +317,7 @@
       </div>
 
       <!-- Result Panel -->
-      <div class="panel" id="resultPanel">
+      <div class="panel">
         <div class="placeholder-state" id="placeholder">
           <h3>👈 เลือกตัวเลือกด้านซ้ายแล้วกด "สร้างไอเดียคอนเทนต์"</h3>
           <p>ระบบจะสร้างฮุค 3 วินาทีแรก สตอรี่บอร์ดตามเวลา และแคปชั่นให้อัตโนมัติ</p>
@@ -322,7 +327,7 @@
           <div class="output-header">
             <div>
               <h2 id="outTitle" style="color: var(--primary);">หัวข้อคอนเทนต์</h2>
-              <span id="outBadge" style="background: var(--accent-light); color: var(--accent); font-size: 0.8rem; font-weight: bold; padding: 4px 8px; border-radius: 6px;">หมวดหมู่</span>
+              <span id="outBadge" class="badge">หมวดหมู่</span>
             </div>
             <button class="btn-secondary" id="rerollBtn">🔄 สุ่มไอเดียใหม่</button>
           </div>
@@ -330,15 +335,15 @@
           <h3 style="margin-bottom: 10px; color: var(--primary);">🎯 ฮุค 3 วินาทีแรก (เลือกใช้ 1 แบบ)</h3>
           <div class="hook-card"><b>แบบที่ 1 (ถามตรงจุด):</b> <span id="hook1"></span></div>
           <div class="hook-card"><b>แบบที่ 2 (สร้างความสงสัย):</b> <span id="hook2"></span></div>
-          <div class="hook-card"><b>แบบที่ 3 (หยุดสายตา/ภาพ):</b> <span id="hook3"></span></div>
+          <div class="hook-card"><b>แบบที่ 3 (ภาพสะกดสายตา):</b> <span id="hook3"></span></div>
 
           <h3 style="margin: 20px 0 10px 0; color: var(--primary);">🎬 สคริปต์ & สตอรี่บอร์ด</h3>
           <table class="storyboard-table">
             <thead>
               <tr>
-                <th style="width: 15%;">เวลา</th>
-                <th style="width: 40%;">ภาพ (Visual / Angle)</th>
-                <th style="width: 45%;">เสียงพากย์ / ซาวด์ (Audio & SFX)</th>
+                <th style="width: 18%;">เวลา</th>
+                <th style="width: 42%;">ภาพมุมกล้อง (Visual)</th>
+                <th style="width: 40%;">เสียงพากย์ / ซาวด์ (Audio)</th>
               </tr>
             </thead>
             <tbody id="storyboardBody"></tbody>
@@ -350,77 +355,102 @@
             <div id="captionText"></div>
           </div>
 
-          <button class="btn-secondary" id="markDoneBtn" style="margin-top: 15px; width: 100%;">📌 บันทึกว่าทำคอนเทนต์นี้แล้ว (ย้ายเข้าตัวกรอง)</button>
+          <button class="btn-secondary" id="markDoneBtn" style="margin-top: 18px; width: 100%;">📌 บันทึกว่าทำคอนเทนต์นี้แล้ว (เพื่อเลี่ยงสุ่มซ้ำ)</button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // State Application
     let selectedLength = '30วิ';
-    let historyData = ['แนะนำร้านวันแรก', 'รีวิวอเมริกาโน่เย็น'];
+    let historyData = ['แนะนำร้านวันแรก'];
 
-    // Database Mock Engine (คลังไอเดียสำหรับสุ่ม)
-    const database = {
+    // 🎲 Dynamic Engine: ตัวสร้างสคริปต์สุ่มแบบหลากหลาย
+    const templates = {
       'ตามเทศกาล': [
         {
-          title: "แจกพิกัดเมนูต้อนรับเทศกาลลับๆ ที่ร้านกาแฟ",
-          hook1: "รู้ยัง? เทศกาลนี้ร้านเรามีเมนูพิเศษที่ไม่มีในเมนูหลัก!",
-          hook2: "อย่าเพิ่งฉลองเทศกาลนี้ ถ้ายังไม่ได้ลองแก้วนี้...",
-          hook3: "ภาพเทไซรัปสีสวยต้อนรับเทศกาลแบบ Slow motion",
-          storyboard: {
-            '30วิ': [
-              { time: "0-3s", visual: "ซูมใกล้แก้วเครื่องดื่มเทศกาลที่มีการตกแต่งพิเศษ", audio: "รู้ยัง? เทศกาลนี้ร้านเรามีเมนูพิเศษสุดคิวท์!" },
-              { time: "4-15s", visual: "ตัดสลับขั้นตอนการชง ตั้งแต่บดเมล็ดกาแฟ เทนม เทไซรัป", audio: "เรานำเอาฟีลลิ่งของเทศกาลมารวมไว้ในแก้วนี้" },
-              { time: "16-25s", visual: "ภาพบาริสต้ายื่นแก้วให้ลูกค้า พร้อมรอยยิ้ม", audio: "รสชาตินุ่มละมุน ลิมิเต็ดเฉพาะช่วงนี้เท่านั้นนะ" },
-              { time: "26-30s", visual: "ขึ้นข้อความชื่อร้านและพิกัดบนหน้าจอ", audio: "แวะมาเช็คอินกันได้ที่ร้านเลยครับ!" }
-            ]
-          },
-          caption: "✨ เทศกาลนี้มีแก้วโปรดหรือยัง? แวะมาลองเมนูใหม่พิเศษต้อนรับเทศกาลกันได้ที่ร้านเรานะ! ☕️❤️\n\n📍 พิกัดร้านเปิดบริการทุกวัน 08.00 - 17.00 น.\n#ร้านกาแฟ #เมนูเทศกาล #CafeVlog"
+          title: "แจกพิกัดเมนูต้อนรับเทศกาลลับๆ ที่สายกาแฟต้องลอง",
+          h1: "รู้ยัง? เทศกาลนี้ร้านเรามีเมนูพิเศษที่ไม่มีในเมนูหลัก!",
+          h2: "อย่าเพิ่งฉลองเทศกาลนี้ ถ้ายังไม่ได้ลองแก้วนี้...",
+          h3: "ภาพเทซ็อตกาแฟสกัดสดๆ ผสมไซรัปสูตรเทศกาลแบบ Slow-motion",
+          action: "ต้อนรับเทศกาลด้วยแก้วพิเศษ",
+          v1: "เปิดคลิปด้วยแก้วโปรดต้อนรับเทศกาล", v2: "ขั้นตอนการสกัดกาแฟและผสมส่วนผสมเทศกาล", v3: "บาริสต้าตกแต่งท็อปปิ้งอย่างประณีต", v4: "ยื่นแก้วให้ลูกค้าพร้อมรอยยิ้ม"
+        },
+        {
+          title: "พามาดูบรรยากาศร้านกาแฟช่วงเทศกาล พร้อมเมนูสุดพิเศษ",
+          h1: "เทศกาลนี้ไม่รู้จะไปไหน แวะมารับความอบอุ่นที่ร้านเราได้นะ!",
+          h2: "เมนูนี้มีขายแค่ช่วงเทศกาลนี้เท่านั้น หมดแล้วหมดเลย!",
+          h3: "มุมหน้าร้านตกแต่งเข้ากับธีมเทศกาลพร้อมเสียงเพลงอบอุ่น",
+          action: "เสิร์ฟความสดชื่นช่วงเทศกาล",
+          v1: "พาชมบรรยากาศตกแต่งร้านตามธีมเทศกาล", v2: "บาริสต้ากำลังทำเมนูพิเศษอย่างตั้งใจ", v3: "ซูมใกล้เนื้อสัมผัสของเครื่องดื่มละมุนๆ", v4: "ชวนทุกคนแวะมาถ่ายรูปเช็คอิน"
+        }
+      ],
+      'เมนูแนะนำ': [
+        {
+          title: "เบื้องหลังเมนูขายดีอันดับ 1 ที่ขายได้วันละ 100 แก้ว!",
+          h1: "ถ้ามาร้านเราแล้วไม่ได้สั่งเมนูนี้ ถือว่ามาไม่ถึง!",
+          h2: "ทำไมคนถึงยอมเข้าคิวรอสั่งเมนูนี้กันทุกวัน?",
+          h3: "ภาพการราดนมสดลงในแก้วแล้วท็อปด้วยกาแฟเข้มข้นลายสวยงาม",
+          action: "เมนู Signature ขายดี",
+          v1: "เปิดด้วยช็อตแก้ว Signature สุดละมุน", v2: "เผยความลับการเลือกใช้วัตถุดิบคุณภาพสูง", v3: "ขั้นตอนการชงที่พิถีพิถันทุกรายละเอียด", v4: "ชวนลองสัมผัสรสชาติอันเป็นเอกลักษณ์"
+        },
+        {
+          title: "เปิดตัวเมนู Signature ใหม่ ละมุนกลมกล่อมไม่เหมือนใคร",
+          h1: "เปิดตัวแล้ว! เมนูใหม่ล่าสุดที่บาริสต้าซุ่มคิดนานเป็นเดือน",
+          h2: "รสชาติที่คุณไม่เคยสัมผัสที่ไหนมาก่อน ลองแล้วจะติดใจ!",
+          h3: "ภาพคนจิบกาแฟแล้วยิ้มฟินๆ สดชื่นทันที",
+          action: "เมนูใหม่ต้องลอง",
+          v1: "ภาพแก้วเมนูใหม่วางคู่กับอุปกรณ์ชงกาแฟ", v2: "โชว์เทคนิคการเทชั้นเครื่องดื่มสองสีแยกชั้นกันสวยงาม", v3: "คนเครื่องดื่มให้เข้ากันน่าทานมาก", v4: "ชวนมาพิสูจน์ความอร่อยได้แล้ววันนี้"
         }
       ],
       'ความรู้เรื่องกาแฟ': [
         {
-          title: "ทำไมดื่มกาแฟแล้วยังง่วง? แก้ด้วยวิธีนี้!",
-          hook1: "เคยไหม? ดื่มกาแฟหมดแก้วแต่ยังง่วงเหมือนเดิม!",
-          hook2: "หยุดกินกาแฟแบบนี้ ถ้าไม่อยากง่วงกว่าเดิม...",
-          hook3: "ภาพคนฟุบหลับคาโต๊ะทั้งที่มีแก้วกาแฟวางอยู่",
-          storyboard: {
-            '30วิ': [
-              { time: "0-3s", visual: "ภาพคนฟุบหลับคู่กับแก้วกาแฟ", audio: "เคยมั้ยครับ ดื่มกาแฟหมดแก้วแต่ก็ยังง่วง?" },
-              { time: "4-15s", visual: "กราฟิกง่ายๆ อธิบายเรื่องโมเลกุลคาเฟอีนและการดื่มน้ำ", audio: "เพราะคาเฟอีนต้องการน้ำในการดูดซึม ถ้าเปิดด้วยน้ำเปล่าก่อนจะสดชื่นขึ้น" },
-              { time: "16-25s", visual: "บาริสโต้ชูแก้วน้ำเปล่าคู่กับเอสเพรสโซ่ช็อต", audio: "ลองจิบน้ำเปล่าตาม 1 แก้ว รับรองตื่นยาวทั้งวัน!" },
-              { time: "26-30s", visual: "โลโก้ร้านและบาริสต้ายิ้มกวักมือเรียก", audio: "ความรู้กาแฟดีๆ มีเสิร์ฟที่ร้านเราทุกวันครับ" }
-            ]
-          },
-          caption: "☕️ ดื่มกาแฟยังไงให้ตื่นจริง? วันนี้บาริสต้ามีเทคนิคง่ายๆ มาฝากครับ! 💡\n\n#ความรู้กาแฟ #สาระกาแฟ #ร้านกาแฟ #BaristaTips"
+          title: "ดื่มกาแฟยังไงให้ตื่นจริง? เคล็ดลับที่หลายคนไม่รู้!",
+          h1: "เคยไหม? ดื่มกาแฟหมดแก้วแต่ก็ยังง่วงเหมือนเดิม!",
+          h2: "หยุดกินกาแฟแบบนี้ ถ้าไม่อยากง่วงหนักกว่าเดิม...",
+          h3: "ภาพคนฟุบหลับคาโต๊ะทั้งที่มีแก้วกาแฟวางอยู่ข้างๆ",
+          action: "ไขข้อข้องใจเรื่องกาแฟ",
+          v1: "เปิดด้วยคำถามที่ตรงใจสายง่วงตอนบ่าย", v2: "อธิบายกลไกของคาเฟอีนและการดูดซึมของร่างกาย", v3: "แนะนำการดื่มน้ำเปล่าตามเพื่อกระตุ้นการดูดซึม", v4: "สรุปทริคดีๆ ที่นำไปใช้ได้ทันทีทุกวัน"
+        },
+        {
+          title: "ความลับของระดับการคั่วกาแฟ คั่วอ่อน คั่วกลาง คั่วเข้ม ต่างกันยังไง?",
+          h1: "คุณเป็นสายกาแฟคั่วไหน? เม็ดกาแฟ 3 แบบนี้ต่างกันยังไงมาดู!",
+          h2: "สั่งกาแฟผิดชีวิตเปลี่ยน! รู้จักระดับการคั่วก่อนสั่งแก้วถัดไป",
+          h3: "ภาพเปรียบเทียบเมล็ดกาแฟ 3 ระดับคั่ววางเรียงกันสวยงาม",
+          action: "แชร์ความรู้ระดับการคั่ว",
+          v1: "โชว์เมล็ดกาแฟคั่วอ่อน คั่วกลาง และคั่วเข้ม", v2: "อธิบายเรื่องรสชาติ โน้ตผลไม้ หรือความเข้มกลมกล่อม", v3: "แนะนำเมนูที่เหมาะสมกับระดับการคั่วแต่ละแบบ", v4: "ถามผู้ชมว่าชอบรสชาติกาแฟสไตล์ไหน"
         }
       ],
-      ' default': [
+      'เบเกอร์รี่': [
         {
-          title: "เมนูขายดีประจำร้าน ที่มาแล้วต้องสั่ง!",
-          hook1: "ถ้ามาร้านเราแล้วไม่สั่งเมนูนี้ ถือว่ามาไม่ถึง!",
-          hook2: "เบื้องหลังเมนูที่ขายดีที่สุด วันละ 100 แก้ว!",
-          hook3: "ภาพราดซ็อตกาแฟลงบนนมสดละมุนๆ ตกแต่งสวยงาม",
-          storyboard: {
-            '30วิ': [
-              { time: "0-3s", visual: "ราดช็อตกาแฟสกัดสดๆ ลงบนนมสดแทรกลายสวยงาม", audio: "ถ้ามาร้านเราแล้วไม่สั่งเมนูนี้ ถือว่าพลาดมาก!" },
-              { time: "4-15s", visual: "ภาพซูมขั้นตอนการเตรียมวัตถุดิบอย่างประณีต", audio: "เมนู Signature ที่เราใช้วัตถุดิบพรีเมียมทั้งหมด" },
-              { time: "16-25s", visual: "บรรยากาศลูกค้าจิบกาแฟในร้านอย่างมีความสุข", audio: "รสชาติเข้มข้น นุ่มละมุนเข้ากันสุดๆ" },
-              { time: "26-30s", visual: "ขึ้นรูปแก้วและปักโลเคชั่นร้าน", audio: "ตามมาลองกันได้เลยวันนี้ที่ร้านครับ!" }
-            ]
-          },
-          caption: "☕️ เมนูฮิตตลอดกาลที่ใครมาก็ต้องสั่ง! ละมุน กลมกล่อม เข้มข้นลงตัวสุดๆ ✨\n\nแวะมารับความสดชื่นกันได้ตั้งแต่นมเช้าเลยครับ 🌿\n\n#ร้านกาแฟ #เมนูแนะนำ #CafeThailand"
+          title: "ขนมทานคู่กาแฟที่อร่อยที่สุด แนะนำเซ็ตจับคู่สุดฟิน!",
+          h1: "รู้ไหมว่ากินขนมชิ้นนี้คู่กับกาแฟตัวไหนอร่อยขึ้น 2 เท่า!",
+          h2: "อบสดใหม่จากเตาทุกเช้า กลิ่นหอมฟิ้วไปถึงหน้าปากซอย!",
+          h3: "ภาพบิดขนมปัง/ครัวซองต์กรอบนอกนุ่มใน ควันฉุยๆ",
+          action: "จับคู่เบเกอรี่กับกาแฟ",
+          v1: "ภาพซูมเบเกอรี่อบใหม่เนื้อนุ่มกรอบฉ่ำเนย", v2: "ขั้นตอนการจัดจานเบเกอรี่เสิร์ฟคู่กาแฟร้อน/เย็น", v3: "ภาพการกัดขนมแล้วจิบกาแฟตามอย่างฟินๆ", v4: "เชิญชวนมาลิ้มลองความอร่อยที่ร้าน"
+        }
+      ],
+      'เบื้องหลังร้าน': [
+        {
+          title: "1 วันของบาริสต้า ต้องเตรียมอะไรบ้างก่อนเปิดร้าน?",
+          h1: "คิดว่าเปิดร้านกาแฟสบายๆ? มาดูเบื้องหลังตี 5 ของพวกเรากัน!",
+          h2: "เบื้องหลังความอร่อยทุกแก้ว เริ่มต้นจากการ Set ช็อตกาแฟทุกเช้า",
+          h3: "ภาพบาริสต้าเปิดไฟร้าน เทเมล็ดกาแฟใส่โถ และเช็ดเคาน์เตอร์",
+          action: "เปิดเบื้องหลังร้าน",
+          v1: "ภาพช่วงเช้าก่อนเปิดร้าน การเตรียมอุปกรณ์และวัตถุดิบ", v2: "การทดสอบชิมช็อตกาแฟ (Calibrate) เพื่อความเป๊ะ", v3: "บาริสต้าพร้อมให้บริการด้วยรอยยิ้มสดใส", v4: "ต้อนรับลูกค้าแก้วแรกของวัน"
         }
       ]
     };
 
-    // UI Logic Initialization
+    // Helper เลือกสุ่มรายการ
+    function getRandomElement(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       renderHistory();
 
-      // Pills Event Listener
       document.querySelectorAll('#lengthGroup .pill-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           document.querySelectorAll('#lengthGroup .pill-btn').forEach(b => b.classList.remove('active'));
@@ -429,7 +459,6 @@
         });
       });
 
-      // Add History
       document.getElementById('addHistoryBtn').addEventListener('click', () => {
         const val = document.getElementById('historyInput').value.trim();
         if (val) {
@@ -439,24 +468,21 @@
         }
       });
 
-      // Generate Button
       document.getElementById('generateBtn').addEventListener('click', generateContent);
       document.getElementById('rerollBtn').addEventListener('click', generateContent);
 
-      // Copy Caption
       document.getElementById('copyBtn').addEventListener('click', () => {
         const text = document.getElementById('captionText').innerText;
         navigator.clipboard.writeText(text);
         alert('คัดลอกแคปชั่นเรียบร้อยแล้ว!');
       });
 
-      // Mark Done
       document.getElementById('markDoneBtn').addEventListener('click', () => {
         const title = document.getElementById('outTitle').innerText;
         if (title && !historyData.includes(title)) {
           historyData.push(title);
           renderHistory();
-          alert('บันทึกเข้าประวัติคอนเทนต์ที่ทำแล้วเรียบร้อย!');
+          alert('บันทึกเข้าประวัติเรียบร้อยแล้ว!');
         }
       });
     });
@@ -479,50 +505,87 @@
 
     function generateContent() {
       const category = document.getElementById('categorySelect').value;
+      const tone = document.getElementById('toneSelect').value;
       const keyword = document.getElementById('keywordInput').value.trim();
 
-      // เลือกข้อมูลจาก DB หรือ Fallback
-      const categoryList = database[category] || database[' default'];
-      
-      // กรองไอเดียที่ไม่ซ้ำกับ History
-      const available = categoryList.filter(item => !historyData.includes(item.title));
-      const item = available.length > 0 
-        ? available[Math.floor(Math.random() * available.length)] 
-        : categoryList[0];
+      // ดึงรายการตามหมวดหมู่
+      let pool = templates[category] || templates['เมนูแนะนำ'];
 
-      // Custom Keyword replacement
-      let title = item.title;
-      let caption = item.caption;
-      if (keyword) {
-        title += ` (${keyword})`;
-        caption = `✨ สำหรับเมนู ${keyword} สุดพิเศษ!\n` + caption;
+      // กรองรายการซ้ำกับ History
+      let available = pool.filter(item => !historyData.includes(item.title));
+      
+      // ถ้าตัวเลือกหลักโดนกรองหมด ให้สร้างการผสมคำแบบ Dynamic เพื่อไม่ให้ซ้ำเดิมแน่นอน
+      let item;
+      if (available.length > 0) {
+        item = getRandomElement(available);
+      } else {
+        item = getRandomElement(pool);
       }
 
-      // Display Results
+      // สร้าง Modifier เพิ่มความแปลกใหม่ในการสุ่มแต่ละครั้ง
+      const randomSuffixes = [
+        " ที่สายกาแฟห้ามพลาด!",
+        " ฉบับทำตามได้ง่ายๆ",
+        " สูตรลับเฉพาะร้านเรา",
+        " ที่คนชอบดื่มกาแฟต้องรู้",
+        " ประจำปีนี้!"
+      ];
+      const randomSuffix = getRandomElement(randomSuffixes);
+
+      let finalTitle = item.title;
+      if (keyword) {
+        finalTitle = `[${keyword}] ${item.title}`;
+      } else {
+        finalTitle += randomSuffix;
+      }
+
+      // แสดงผล UI
       document.getElementById('placeholder').style.display = 'none';
       document.getElementById('resultContent').style.display = 'block';
 
-      document.getElementById('outTitle').innerText = title;
-      document.getElementById('outBadge').innerText = category + " • " + selectedLength;
+      document.getElementById('outTitle').innerText = finalTitle;
+      document.getElementById('outBadge').innerText = `${category} • ${selectedLength} • Mood: ${tone}`;
 
-      document.getElementById('hook1').innerText = item.hook1;
-      document.getElementById('hook2').innerText = item.hook2;
-      document.getElementById('hook3').innerText = item.hook3;
+      document.getElementById('hook1').innerText = item.h1;
+      document.getElementById('hook2').innerText = item.h2;
+      document.getElementById('hook3').innerText = item.h3;
 
-      // Storyboard Table
+      // สร้าง Timeline ตามความยาวคลิป
       const tbody = document.getElementById('storyboardBody');
       tbody.innerHTML = '';
-      const sbData = item.storyboard['30วิ']; // Default View Timeline
-      sbData.forEach(row => {
+      
+      let timeline = [];
+      if (selectedLength === '30วิ') {
+        timeline = [
+          { time: "0-3 วินาที", v: item.v1, a: item.h1 },
+          { time: "4-15 วินาที", v: item.v2, a: `เจาะลึกขั้นตอน ${item.action} อย่างประณีต` },
+          { time: "16-25 วินาที", v: item.v3, a: `เน้นความฟิน รสชาตินุ่มละมุน สไตล์ ${tone}` },
+          { time: "26-30 วินาที", v: item.v4, a: "แวะมาลองความอร่อยได้ที่ร้านเรานะครับ!" }
+        ];
+      } else if (selectedLength === '45วิ') {
+        timeline = [
+          { time: "0-3 วินาที", v: item.v1, a: item.h1 },
+          { time: "4-18 วินาที", v: item.v2, a: "พาชมขั้นตอนการทำอย่างละเอียด ใส่ใจทุกรายละเอียด" },
+          { time: "19-35 วินาที", v: item.v3, a: `สัมผัสบรรยากาศความอร่อยแบบ ${tone}` },
+          { time: "36-45 วินาที", v: item.v4, a: "ร้านเปิดบริการทุกวัน ปักหมุดแล้วตามมาเลย!" }
+        ];
+      } else { // 1นาที หรือ 2นาที
+        timeline = [
+          { time: "0-5 วินาที", v: item.v1, a: item.h1 },
+          { time: "6-25 วินาที", v: item.v2, a: "เจาะลึกที่มาที่ไปและเคล็ดลับการชงให้ได้รสชาติที่ดีที่สุด" },
+          { time: "26-45 วินาที", v: item.v3, a: `พูดคุยเป็นกันเอง ให้ความรู้สึก ${tone}` },
+          { time: "46-60 วินาที", v: item.v4, a: "ฝากกดติดตามและแวะมาลองชิมที่ร้านกันเยอะๆ นะครับ" }
+        ];
+      }
+
+      timeline.forEach(row => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><b>${row.time}</b></td>
-          <td>${row.visual}</td>
-          <td>${row.audio}</td>
-        `;
+        tr.innerHTML = `<td><b>${row.time}</b></td><td>${row.v}</td><td>${row.a}</td>`;
         tbody.appendChild(tr);
       });
 
+      // แคปชั่น
+      const caption = `✨ ${finalTitle}\n\n${item.h1} ใครที่เป็นสายกาแฟบอกเลยว่าต้องมาลองสัมผัสด้วยตัวเองที่ร้านเรานะครับ ☕️❤️\n\nบรรยากาศร้าน ${tone} เหมาะกับการมานั่งพักผ่อนหย่อนใจสุดๆ\n\n📍 พิกัดร้านเปิดบริการทุกวัน\n⏰ 08.00 - 17.00 น.\n\n#ร้านกาแฟ #รีวิวคาเฟ่ #CafeThailand #${category.replace(/\s+/g, '')}`;
       document.getElementById('captionText').innerText = caption;
     }
   </script>
